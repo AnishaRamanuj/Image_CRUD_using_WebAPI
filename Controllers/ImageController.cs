@@ -1,4 +1,4 @@
-﻿using Image_CRUD_Postman.Models;
+using Image_CRUD_Postman.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -63,36 +63,37 @@ namespace Image_CRUD_Postman.Controllers
 
         }
 
-
         [HttpDelete]
-        //[Route("api/Image")]
         public HttpResponseMessage Delete(int id)
         {
             try
             {
-
                 Image_CRUDEntities1 entities = new Image_CRUDEntities1();
                 Image_POSTMAN file = entities.Image_POSTMAN.ToList().Find(p => p.Id == id);
-
-                string pic = file.Name;
-                string path = @"E:\Image\" + file;
-                FileInfo ff = new FileInfo(path);
-
+                string files = file.Name;
+                string path = @"E:\Image\" + files;
+                FileInfo Anisha = new FileInfo(path);
                 if (file != null)
                 {
+                    Anisha.Delete();
+                    string filePath = @"E:\Image\" + files;
+                    File.Delete(filePath);
+                    //db.tblProducts.Remove(file);
+                    entities.SaveChanges();
                     entities.Image_POSTMAN.Remove(file);
                     entities.SaveChanges();
+
 
                 }
                 return Request.CreateResponse(HttpStatusCode.OK, "data delete sucessfully");
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Data not delete");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "ID not Found");
             }
         }
-
+       
         [HttpPut]
         public HttpResponseMessage UpdateImage(int id)
         {
